@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+                background-image: url('/static/img/bgg (2).jpg');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                 height: 100vh; /* Set the height of the background */
+            }
+            /* Define your dark theme styles here */
+            body.dark-mode {
+                background-color: #1a1a1a;
+                color: #ffffff;
+            }
+            .container {
+                display: flex;
+                justify-content: space-between;
+            }
+    
+            .form-container {
+                flex: 1;
+                margin-right: 20px; /* Adjust as needed */
+            }
+    
+            .results-container {
+                flex: 1;
+                background-color: #ffffffc2; /* Set background color to white */
+                padding: 20px; /* Add padding for spacing */
+                border-radius: 8px; /* Add border radius for rounded corners */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+            }
+    
+            /* Responsive layout adjustments */
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column;
+                }
+                .form-container,
+                .results-container {
+                    margin-right: 0;
+                }
+            }
+            /* Navigation bar styles */
+            .navbar {
+                overflow: hidden;
+                background-color: #00000080;
+                width: 100%; /* Set the width to cover the entire page */
+                padding: 0; /* Remove padding */
+                margin: 0; /* Remove margin */
+                position: fixed; /* Fixed position to cover the entire viewport */
+                top: 0; /* Align to the top */
+                left: 0; /* Align to the left */
+                z-index: 9999; /* Set a high z-index to ensure it's above other content */
+            }
+    
+            .navbar h1 {
+                margin: 0;
+                padding: 14px 16px;
+                float: left;
+                color: white;
+                font-family: system-ui; /* Add font family */
+                font-size: 24px; /* Add font size */
+                font-weight: bold; /* Add font weight */
+                text-transform: uppercase; /* Convert text to uppercase */
+            }
+    
+            .navbar a {
+                float: left;
+                display: block;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+    
+            .navbar a:hover {
+                background-color: #ddd;
+                color: black;
+            }
+            /* Footer styles */
+            .footer {
+                background-color: #00000080;
+                text-align: center;
+                padding: 20px 0;
+                width: 100%;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+            }
+        </style>
+        <script>
+            function toggleDarkMode() {
+                const body = document.body;
+                const themeStyleLink = document.getElementById('theme-style');
+    
+                // Add an event listener for the 'transitionend' event
+                themeStyleLink.addEventListener('transitionend', () => {
+                    // Update the theme link after the transition is complete
+                    themeStyleLink.removeEventListener('transitionend', arguments.callee);
+                    themeStyleLink.href = body.classList.contains('dark-mode')
+                        ? "{{ url_for('static', filename='styles.css') }}"
+                        : "{{ url_for('static', filename='dark-theme.css') }}";
+                });
+    
+                // Toggle the dark mode class
+                body.classList.toggle('dark-mode');
+            }
+        </script>
+</head>
+<body>
+    <div class="results-container ">
+        <form>
+            <h2>Ranked Resumes:</h2>
+            <table border="">
+                <tr>
+                    <th>Rank</th>
+                    <th>name</th>
+                    <th>Email</th>
+
+                    <th>Similarity in %</th>
+                </tr>
+                {% for result in results %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ result[0][0] }}</td>
+                    <td>{{ result[1][0] }}</td>
+                    <td>{{ result[2] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </div>
+</div>
+<div class="footer">
+    <p style="color: white;">&copy;Resumesift All rights reserved.</p>
+</div>
+</body>
+</html>
